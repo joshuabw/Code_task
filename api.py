@@ -53,12 +53,14 @@ async def upload(file: UploadFile = File(...)):
 
     #fit input image file in prediction model
     prediction = model_prediction(tmp_path)
-    prediction = prediction.tolist()
+    if prediction == 0:
+        prediction = "the model predicts Normal !!!! but I would still recommend a check up"
+    else:
+        prediction = "the model predicts Pneumonia :( !!!! Could be a false alarm!"
     prediction = jsonable_encoder(prediction)
 
     file.file.close()
-    #tmp_path.unlink()
-    #return tmp_path
+
     return JSONResponse(content=prediction)
 
     
